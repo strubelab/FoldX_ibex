@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+
+"""
+Script to run the wrapper from the command line
+"""
+
+import argparse
+from Bio import SeqIO
+from pathlib import Path
+from HHblits.HHblits_ibex import HHblitsIbex
+
+def parsing(args: list=None) -> argparse.Namespace:
+    """
+    Creates the argument parser instance and applies it to the command line
+    input
+
+    Args:
+        args (list, optional): List of the arguments to be parsed (only to be
+            used for testing). If none is provided, it is taken from sys.argv.
+            Defaults to None.
+
+    Returns:
+        argparse.Namespace
+    """
+
+    def validate_file(input:str) -> bool:
+        """
+        Validate that the input is an existing file
+
+        Args:
+            input (str): Input file
+
+        Returns:
+            bool
+        """
+        inp = Path(input)
+        if not inp.is_file():
+            raise ValueError
+
+        return inp
+
+    parser = argparse.ArgumentParser(description='''Takes a FASTA file with one
+        or more amino acid sequences, and submits a job array to ibex to
+        run HHblits on each sequence'''.replace('\n',''))
+
+    parser.add_argument("input", help='''Fasta file with the sequence(s) to 
+        run.'''.replace('\n',''), type=validate_file)
+    
+    parser.add_argument("-d", "--destination", default=Path.cwd()/'HHblits_ibex',
+        help='''Path for saving the resulting hits in pickle format. Also will 
+        contain the sequence files as they were submitted to ibex, the script 
+        that was submitted and the ibex stdout files'''.replace('\n',''))
+
+    return parser.parse_args(args)
+
+
+if __name__ == '__main__':
+
+    args = parsing()
+    sequences = list(SeqIO.parse(args.input, 'fasta'))
+    out_dir = Path(args.destination)
+
+    exe = HHblitsIbex(sequences, out_dir)
+    exe.run()

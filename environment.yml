@@ -1,0 +1,16 @@
+name: python-env
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - git
+  - python
+  - ipython
+  - pip
+  - build
+  - twine
+  - biopython
+  - numpy
+  - pandas
