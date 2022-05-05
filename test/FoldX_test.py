@@ -1,8 +1,7 @@
 import unittest
 import socket
-import os, sys, shutil
+import shutil
 from  pathlib import Path
-from Bio import SeqIO
 import tempfile
 
 import pandas as pd
@@ -30,7 +29,7 @@ class FoldXTest(unittest.TestCase):
         """
         Test that the proper command is created in the __init__ method
         """
-        self.assertEqual(self.program.args,
+        self.assertEqual(self.exe.args,
             (
             f'./foldx_20221231 '
             f'--command=BuildModel '
@@ -44,14 +43,14 @@ class FoldXTest(unittest.TestCase):
         """
         Test that the prepare method creates the input mutant list
         """
-        self.program.prepare()
+        self.exe.prepare()
 
         self.assertTrue(self.mutant_file.is_file())
 
         with open(self.mutant_file, 'r') as f:
             mutants = f.read()
 
-        self.assertTrue(mutants, ','.join(self.mutations)+';')
+        self.assertTrue(mutants, 'LA675W,LB675P;')
 
     def test_output_created(self):
         """
@@ -62,16 +61,9 @@ class FoldXTest(unittest.TestCase):
             self.skipTest("Needs to be run in ibex.")
 
         energy = self.exe.run()
-        
-        # e.g. when the output is a pandas DataFrame
-        output_df = self.program.run()
-        test_pickle = Path(__file__).parent / 'test_outputs/output.pkl'
+        test_pickle = Path(__file__).parent / 'test_outputs/energy.pkl'
         expected_output = pd.read_pickle(test_pickle)
-        self.assertTrue(expected_output.equals(output_df))
-
-        # when the output is a file
-        f_out = self.out_dir / 'output.out'
-        self.assertTrue(f_out.is_file())
+        self.assertTrue(expected_output.equals(energy))
 
 
     def tearDown(self):

@@ -26,7 +26,7 @@ class FoldX(Executor):
         self.out_dir = out_dir or self.tempdir
 
         self.mutations = mutations
-        self.chain = chains
+        self.chains = chains
         assert len(mutations) == len(chains)
 
         self.mutant_file = self.out_dir / 'individual_list.txt'
@@ -40,9 +40,9 @@ class FoldX(Executor):
             f'./foldx_20221231 '
             f'--command=BuildModel '
             f'--pdb={self.pdb.name} '
-            f'--pdb-dir={self.pdb.parent} '
-            f'--mutant-file={self.mutant_file} '
-            f'--output-dir={self.out_dir}'
+            f'--pdb-dir={self.pdb.parent.resolve()} '
+            f'--mutant-file={self.mutant_file.resolve()} '
+            f'--output-dir={self.out_dir.resolve()}'
         ).split()
 
         # Call the parent __init__ method from the Executor class
