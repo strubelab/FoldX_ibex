@@ -5,11 +5,10 @@ To be used only along with the ibex wrapper
 
 from subprocess import CalledProcessError
 import sys
-from .wrapper import Program
+from FoldX import FoldX
 from pathlib import Path
 import logging
-
-from Bio import SeqIO
+import pickle
 
 from executor.executor import RunError
 
@@ -20,19 +19,20 @@ logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 seqs_file = Path(sys.argv[1])
 out_dir = Path(sys.argv[2])
 
-sequences = list(SeqIO.parse(seqs_file, 'fasta'))
+with open(seqs_file, 'rb') as f:
+    pdbs_mutations = pickle.load()
 
 # Run the Program wrapper for every sequence
-for seq in sequences:
-    name = seq.name.split('|')[1]
+for pdb, mutations, chains in pdbs_mutations:
+    name = pdb.stem
     try:
-        logging.info(f"Running Program for sequence {seq.name}...")
-        exe = Program(seq)
+        logging.info(f"Running FoldX for sequence {name}...")
+        exe = FoldX(pdb, mutations, chains)
         output = exe.run()
 
         logging.info(f"Saving DataFrame to pickle...")
         output.to_pickle(out_dir / f'{name}.pkl')
     
     except (RunError, MemoryError, CalledProcessError) as e:
-        logging.error(f"NO PROPERTIES CALCULATED FOR {seq.name}")
+        logging.error(f"NO PROPERTIES CALCULATED FOR {name}")
         

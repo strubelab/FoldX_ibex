@@ -9,8 +9,5 @@ dependencies:
   - python
   - ipython
   - pip
-  - build
-  - twine
-  - biopython
   - numpy
   - pandas

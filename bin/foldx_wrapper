@@ -7,7 +7,8 @@ Script to run the wrapper from the command line
 import argparse
 from Bio import SeqIO
 from pathlib import Path
-from HHblits.HHblits_ibex import HHblitsIbex
+
+from FoldX.FoldX import FoldX
 
 def parsing(args: list=None) -> argparse.Namespace:
     """
@@ -39,17 +40,19 @@ def parsing(args: list=None) -> argparse.Namespace:
 
         return inp
 
-    parser = argparse.ArgumentParser(description='''Takes a FASTA file with one
-        or more amino acid sequences, and submits a job array to ibex to
-        run HHblits on each sequence'''.replace('\n',''))
+    parser = argparse.ArgumentParser(description='''Takes a PDB file and one or 
+        more amino acid mutations'''.replace('\n',''))
 
-    parser.add_argument("input", help='''Fasta file with the sequence(s) to 
-        run.'''.replace('\n',''), type=validate_file)
+    parser.add_argument("--input", help='''PDB file to model the mutation.
+        '''.replace('\n',''), type=validate_file, required=True)
     
-    parser.add_argument("-d", "--destination", default=Path.cwd()/'HHblits_ibex',
-        help='''Path for saving the resulting hits in pickle format. Also will 
-        contain the sequence files as they were submitted to ibex, the script 
-        that was submitted and the ibex stdout files'''.replace('\n',''))
+    parser.add_argument("--mutations", help='''Mutations to model on the given 
+        PDB file, in the format [from_aa][chain][number][to_aa], e.g. L675AP
+        '''.replace('\n',''), nargs='+')
+    
+    parser.add_argument("-d", "--destination", default=Path.cwd()/'foldx',
+        help='''Path for saving the resulting energies in pickle format.
+        '''.replace('\n',''))
 
     return parser.parse_args(args)
 
@@ -57,8 +60,13 @@ def parsing(args: list=None) -> argparse.Namespace:
 if __name__ == '__main__':
 
     args = parsing()
-    sequences = list(SeqIO.parse(args.input, 'fasta'))
+    pdb = args.input
+    mutations = args.mutations
+
+    chains = [mut[1] for mut in mutations]
+    mutations = [mut[0]+mut[2:] for mut in mutations]
+
     out_dir = Path(args.destination)
 
-    exe = HHblitsIbex(sequences, out_dir)
+    exe = FoldX([pdb], [mutations], [chains], out_dir)
     exe.run()
