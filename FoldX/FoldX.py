@@ -17,7 +17,28 @@ class FoldX(Executor):
     def __init__(self, pdb:Path, mutations:list, chains:list, out_dir:Path=None,
         tempdir:Path=None, **kw):
         """
-        Instantiate variables
+        Wrapper to run the BuildModel command from FoldX and parse the resulting
+        energy differences to a pandas Series
+
+        Args:
+            pdb (Path):
+                Path object with the PDB to mutate
+            mutations (list):
+                List with one list for each chain containing the mutations to be
+                done to that chain. E.g. for a PDB with two chains, with one
+                mutation in each:
+                [['L675W'], ['L675P']]
+            chains (list):
+                List with the chain IDs to be mutated from the PDB. The length has
+                to be the same as the `mutations` list provided. E.g. for a PDB
+                with two chains to be mutated:
+                ['A', 'B']
+            out_dir (Path, optional):
+                Directory to save the output files from FoldX. Saves them to a
+                temporary directory by default which is erased afterwards.
+            tempdir (Path, optional):
+                Path to use as temporary directory. It will be erased afterwards
+                unless you give `keep_tempdir=True`. Defaults to None.
         """
 
         self.pdb = pdb

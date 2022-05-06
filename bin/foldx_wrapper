@@ -62,8 +62,15 @@ if __name__ == '__main__':
     pdb = args.input
     mutations = args.mutations
 
+    # ['A','B']
     chains = [mut[1] for mut in mutations]
+
+    # ['L675P', 'L675P']
     mutations = [mut[0]+mut[2:] for mut in mutations]
+    
+    # Convert to one list of mutations per chain in the `chains` list
+    # [['L675P'], ['L675P']]
+    mutations = [[mut] for mut in mutations]
 
     out_dir = Path(args.destination)
 

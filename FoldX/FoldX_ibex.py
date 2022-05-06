@@ -22,13 +22,19 @@ class FoldXIbex(IbexRun):
 
         Args:
             pdbs (list):
-                List of Paths with the PDBs to model mutations
+                List of Paths with the PDBs to model mutations. E.g. for two
+                PDBs:
+                [Path('./test/test_outputs/2oun.pdb')] * 2
             mutations (list):
                 List of lists with the mutations for each pdb. The length needs
-                to be the same as the pdb list
+                to be the same as the pdb list. E.g. for 2 PDBs with two chains
+                each, with one mutation in each chain:
+                [[['L675W'], ['L675P']], [['L675W'], ['L675P']]]
             chains (list):
                 List of lists with the chains for each pdb. The length needs to
-                be the same as the pdb list
+                be the same as the pdb list. E.g. for two PDBs with two chains
+                each:
+                [['A','B'],['A','B']]
             out_dir (Path):
                 Directory to save the output for each protein sequence
             time_per_command (int, optional):
