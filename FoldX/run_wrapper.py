@@ -20,7 +20,7 @@ seqs_file = Path(sys.argv[1])
 out_dir = Path(sys.argv[2])
 
 with open(seqs_file, 'rb') as f:
-    pdbs_mutations = pickle.load()
+    pdbs_mutations = pickle.load(f)
 
 # Run the Program wrapper for every sequence
 for pdb, mutations, chains in pdbs_mutations:

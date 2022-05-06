@@ -5,10 +5,9 @@ Script to run the wrapper from the command line
 """
 
 import argparse
-from Bio import SeqIO
 from pathlib import Path
 
-from FoldX.FoldX import FoldX
+from FoldX.FoldX_ibex import FoldXIbex
 
 def parsing(args: list=None) -> argparse.Namespace:
     """
@@ -68,5 +67,5 @@ if __name__ == '__main__':
 
     out_dir = Path(args.destination)
 
-    exe = FoldX([pdb], [mutations], [chains], out_dir)
+    exe = FoldXIbex([pdb], [mutations], [chains], out_dir)
     exe.run()
