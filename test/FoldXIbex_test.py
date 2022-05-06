@@ -40,7 +40,7 @@ class FoldXIbexTest(unittest.TestCase):
         sequences per job
         """
         file_names = [self.pdbs_dir / f'pdbs{i}.pkl' \
-                        for i in range(10)]
+                        for i in range(2)]
         self.exe.prepare()
 
         for i, file in enumerate(file_names):
@@ -67,7 +67,7 @@ class FoldXIbexTest(unittest.TestCase):
 
         self.script = (
             '#!/bin/bash --login\n'
-            f'#SBATCH --job-name=programibex_unittest\n'
+            f'#SBATCH --job-name=foldxibex_unittest\n'
             f'#SBATCH --partition=batch\n'
             f'#SBATCH --output={self.out_ibex}/%J.out\n'
             f'#SBATCH --time=00:01:00\n'
