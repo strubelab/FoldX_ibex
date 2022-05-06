@@ -43,16 +43,17 @@ class FoldXIbexTest(unittest.TestCase):
                         for i in range(2)]
         self.exe.prepare()
 
+        pdb_muts = []
         for i, file in enumerate(file_names):
             self.assertTrue(file.exists())
             with open(file, 'rb') as f:
-                pdb_muts = pickle.load(f)
+                pdb_muts += pickle.load(f)
 
-        pdbs, mutations, chains = list(zip(pdb_muts))
+        pdbs, mutations, chains = list(zip(*pdb_muts))
 
-        self.assertEqual(self.pdbs, pdbs)
-        self.assertEqual(self.mutations, mutations)
-        self.assertEqual(self.chains, chains)
+        self.assertEqual(self.pdbs, list(pdbs))
+        self.assertEqual(self.mutations, list(mutations))
+        self.assertEqual(self.chains, list(chains))
 
 
     def test_script_made(self) -> None:
@@ -76,7 +77,7 @@ class FoldXIbexTest(unittest.TestCase):
             f"#SBATCH --mem=4G\n"
             f'#SBATCH --array=0-1\n'
             '\n'
-            f'conda activate {self.exe.conda_env}'
+            f'conda activate {self.exe.conda_env}\n'
             '\n'
             f'seq_file="{self.pdbs_dir.resolve()}/'
             'pdbs${SLURM_ARRAY_TASK_ID}.pkl"\n'

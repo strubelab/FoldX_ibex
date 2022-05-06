@@ -34,9 +34,9 @@ class FoldXTest(unittest.TestCase):
             f'./foldx_20221231 '
             f'--command=BuildModel '
             f'--pdb={self.pdb.name} '
-            f'--pdb-dir={self.pdb_dir} '
-            f'--mutant-file={self.mutant_file} '
-            f'--output-dir={self.out_dir}'
+            f'--pdb-dir={self.pdb_dir.resolve()} '
+            f'--mutant-file={self.mutant_file.resolve()} '
+            f'--output-dir={self.out_dir.resolve()}'
             ).split())
 
     def test_creates_mutant_list(self):
