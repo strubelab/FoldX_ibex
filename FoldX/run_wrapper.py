@@ -24,7 +24,12 @@ with open(seqs_file, 'rb') as f:
 
 # Run the Program wrapper for every sequence
 for pdb, mutations, chains in pdbs_mutations:
-    name = pdb.stem
+    formatted_mutations = []
+    for i, c in enumerate(chains):
+        imuts = mutations[i]
+        formatted_mutations += [m[0]+c+m[1:] for m in imuts]
+    name = pdb.stem+'_'+'_'.join(formatted_mutations)
+    
     try:
         logging.info(f"Running FoldX for sequence {name}...")
         exe = FoldX(pdb, mutations, chains)

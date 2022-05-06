@@ -46,7 +46,7 @@ def parsing(args: list=None) -> argparse.Namespace:
         '''.replace('\n',''), type=validate_file, required=True)
     
     parser.add_argument("--mutations", help='''Mutations to model on the given 
-        PDB file, in the format [from_aa][chain][number][to_aa], e.g. L675AP
+        PDB file, in the format [from_aa][chain][number][to_aa], e.g. LA675P
         '''.replace('\n',''), nargs='+')
     
     parser.add_argument("-d", "--destination", default=Path.cwd()/'foldx',
