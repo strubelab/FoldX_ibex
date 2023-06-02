@@ -58,7 +58,7 @@ class FoldX(Executor):
         self.BIN = Path(self.BIN)
 
         self.args = (
-            f'./foldx_20221231 '
+            f'./foldx_20231231 '
             f'--command=BuildModel '
             f'--pdb={self.pdb.name} '
             f'--pdb-dir={self.pdb.parent.resolve()} '
