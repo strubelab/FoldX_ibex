@@ -41,9 +41,28 @@ pip install -e ./Executor
 
 # Usage
 
+## Command line program
+
+You can run the wrapper from the command line, but only for a single PDB file at a time:
+
+```
+$ foldx_wrapper --help
+usage: foldx_wrapper [-h] --input INPUT [--mutations MUTATIONS [MUTATIONS ...]] [-d DESTINATION]
+
+Takes a PDB file and one or more amino acid mutations
+
+options:
+  -h, --help            show this help message and exit
+  --input INPUT         PDB file to model the mutation.
+  --mutations MUTATIONS [MUTATIONS ...]
+                        Mutations to model on the given PDB file, in the format [from_aa][chain][number][to_aa], e.g. LA675P
+  -d DESTINATION, --destination DESTINATION
+                        Path for saving the resulting energies in pickle format.
+``
+
 ## Python class
 
-You can run the wrapper from a python session or jupyter notebook. In this example we will model mutations on the `2oun` PDB structure. It has two identical chains, so we have to indicate them both in the `mutations` and `chains` arguments:
+You can also run the wrapper from a python session. In this example we will model mutations on the `2oun` PDB structure. It has two identical chains, so we have to indicate them both in the `mutations` and `chains` arguments:
 
 ```python
 from pathlib import Path
@@ -65,21 +84,3 @@ exe.run()
 
 It will save in the `output_dir` a pickle file with the name of the pdb and the modeled mutations in the format `[from_aa][chain][number][to_aa]`. E.g. for the example the name will be `./output/2oun_LA675W_LB675P.pkl`.
 
-## Command line program
-
-You can also run the wrapper from the command line, but only for a single PDB file at a time:
-
-```
-$ foldx_wrapper --help
-usage: foldx_wrapper [-h] --input INPUT [--mutations MUTATIONS [MUTATIONS ...]] [-d DESTINATION]
-
-Takes a PDB file and one or more amino acid mutations
-
-options:
-  -h, --help            show this help message and exit
-  --input INPUT         PDB file to model the mutation.
-  --mutations MUTATIONS [MUTATIONS ...]
-                        Mutations to model on the given PDB file, in the format [from_aa][chain][number][to_aa], e.g. LA675P
-  -d DESTINATION, --destination DESTINATION
-                        Path for saving the resulting energies in pickle format.
-```
