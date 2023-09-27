@@ -3,8 +3,6 @@
 
 # Installation
 
-Skip these steps if you're using the version installed in ibex.
-
 1. (Skip if you're using the version in ibex) Register at the [FoldX website](https://foldxsuite.crg.eu/academic-license-info), download and extract the program wherever you want to save it.
 
 2. Clone this repository and go into the directory that was created
