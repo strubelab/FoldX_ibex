@@ -15,7 +15,7 @@ class FoldX(Executor):
     """
 
     def __init__(self, pdb:Path, mutations:list, chains:list, out_dir:Path=None,
-        tempdir:Path=None, **kw):
+        tempdir:Path=None, bin:Path=None, **kw):
         """
         Wrapper to run the BuildModel command from FoldX and parse the resulting
         energy differences to a pandas Series
@@ -39,6 +39,8 @@ class FoldX(Executor):
             tempdir (Path, optional):
                 Path to use as temporary directory. It will be erased afterwards
                 unless you give `keep_tempdir=True`. Defaults to None.
+            bin (Path, optional):
+                Path to the FoldX binary. Defaults to None.
         """
 
         self.pdb = pdb
@@ -52,10 +54,14 @@ class FoldX(Executor):
 
         self.mutant_file = self.out_dir / 'individual_list.txt'
 
-        config = configparser.ConfigParser()
-        config.read(Path(__file__).parent/'config.ini')
-        self.BIN = config['user.lib.files']['BIN'] or config['DEFAULT']['BIN']
-        self.BIN = Path(self.BIN)
+        # Get the path to the FoldX binary
+        if bin:
+            self.BIN = bin
+        else:
+            config = configparser.ConfigParser()
+            config.read(Path(__file__).parent/'config.ini')
+            self.BIN = config['user.lib.files']['BIN'] or config['DEFAULT']['BIN']
+            self.BIN = Path(self.BIN)
 
         self.args = (
             f'./foldx_20241231 '
