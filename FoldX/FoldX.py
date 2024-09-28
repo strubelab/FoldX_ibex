@@ -56,7 +56,7 @@ class FoldX(Executor):
 
         # Get the path to the FoldX binary
         if bin_dir:
-            self.BIN = bin
+            self.BIN = bin_dir
         else:
             config = configparser.ConfigParser()
             config.read(Path(__file__).parent/'config.ini')
