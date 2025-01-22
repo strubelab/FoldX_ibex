@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 *.egg-info
 dist
+.ipynb_checkpoints/
 
 # macOS
 .DS_Store
@@ -20,3 +21,7 @@ ipython_config.py
 
 # vscode
 .vscode/
+
+lib/
+notebook/
+output_test/

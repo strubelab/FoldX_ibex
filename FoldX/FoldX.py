@@ -15,7 +15,7 @@ class FoldX(Executor):
     """
 
     def __init__(self, pdb:Path, mutations:list, chains:list, out_dir:Path=None,
-        tempdir:Path=None, bin_dir:Path=None, **kw):
+        tempdir:Path=None, bin_dir:Path=None, executable:Path=None, **kw):
         """
         Wrapper to run the BuildModel command from FoldX and parse the resulting
         energy differences to a pandas Series
@@ -62,9 +62,14 @@ class FoldX(Executor):
             config.read(Path(__file__).parent/'config.ini')
             self.BIN = config['user.lib.files']['BIN'] or config['DEFAULT']['BIN']
             self.BIN = Path(self.BIN)
+        
+        if executable:
+            self.EXEC = executable
+        else:
+            self.EXEC = 'foldx_20251231'
 
         self.args = (
-            f'./foldx_20241231 '
+            f'./{self.EXEC} '
             f'--command=BuildModel '
             f'--pdb={self.pdb.name} '
             f'--pdb-dir={self.pdb.parent.resolve()} '
